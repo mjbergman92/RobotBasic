@@ -14,7 +14,7 @@ public class Shooter {
 	
 	public void process() {
 		
-		shooter.set(1.0);
+		shooter.set(0.2);
 		
 	}
 	
