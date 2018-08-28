@@ -41,6 +41,7 @@ public class Drive {
 			encoderCountsRight = frontLeft.getSensorCollection().getQuadraturePosition();
 			
 			inchesRight = encoderCountsRight * RobotMap.inchesPerCountMultiplier;
+			inchesLeft = encoderCountsLeft * RobotMap.inchesPerCountMultiplier;
 			
 		}
 	}
