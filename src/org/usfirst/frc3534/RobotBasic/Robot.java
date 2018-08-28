@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
 
     public static OI oi;
     public static Drive drive;
+    public static Shooter shooter;
     
     private int loopPeriod = 0;
 	private int loopCnt = 0;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
         RobotMap.init();
         
         drive = new Drive();
+        shooter = new Shooter();
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null
@@ -156,6 +158,7 @@ public class Robot extends TimedRobot {
         		//run processes
         		
         		drive.process();
+        		shooter.process();
         		
         	}
         	
