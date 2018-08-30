@@ -18,6 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc3534.RobotBasic.systems.*;
 
+import Autons.AutonStateMachine0;
+import Autons.AutonStateMachine1;
+import Autons.AutonStateMachine2;
+import Autons.AutonStateMachine3;
+import Autons.AutonStateMachineInterface;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -33,6 +39,8 @@ public class Robot extends TimedRobot {
     
     private int loopPeriod = 0;
 	private int loopCnt = 0;
+	
+	private AutonStateMachineInterface autonStateMachine;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -77,7 +85,7 @@ public class Robot extends TimedRobot {
 
     	 System.out.println("Running Auton " + desiredAutonMode);
 		
-    	 /*
+    	 
     	 switch(desiredAutonMode) {
 			case 0: 
 				autonStateMachine = new AutonStateMachine0();								
@@ -92,7 +100,7 @@ public class Robot extends TimedRobot {
 				autonStateMachine = new AutonStateMachine3();
 				break;
     	 }
-    	 */
+    	 
     	
 		SmartDashboard.putNumber("aMode", desiredAutonMode);
         
@@ -111,6 +119,8 @@ public class Robot extends TimedRobot {
         		loopCnt++;
         		
         		//run processes
+        		drive.process();
+        		autonStateMachine.process();
         		
         	}
         	

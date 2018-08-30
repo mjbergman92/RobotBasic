@@ -40,9 +40,12 @@ public class RobotMap {
 	
 	public static AHRS navx;
 	
+	public static final double wheelBase_width = 36;
+	public static final double robotMaxVeloctiy = 48; //inches per second
+	
 	//Wheel Encoder Calculations
-    private static final double countsPerRevEncoders = 1440; //1440 if plugged into talon. 360 if directly into the roborio; just go with, it its weird
-    private static final double wheelDiameter = 6; //measured in inches
+    public static final int countsPerRevEncoders = 1440; //1440 if plugged into talon. 360 if directly into the roborio; just go with, it its weird
+    public static final double wheelDiameter = 6; //measured in inches
     public static final double inchesPerCountMultiplier = wheelDiameter * Math.PI / countsPerRevEncoders;
 
     public static void init() {

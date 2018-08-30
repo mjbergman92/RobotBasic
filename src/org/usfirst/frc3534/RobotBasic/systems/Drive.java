@@ -1,5 +1,7 @@
 package org.usfirst.frc3534.RobotBasic.systems;
 
+import java.io.File;
+
 import org.usfirst.frc3534.RobotBasic.Robot;
 import org.usfirst.frc3534.RobotBasic.RobotMap;
 
@@ -9,21 +11,32 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.followers.EncoderFollower;
+import jaci.pathfinder.modifiers.TankModifier;
+
 public class Drive {
 
-	private SpeedControllerGroup right = RobotMap.rightSideMotors;
-	private SpeedControllerGroup left = RobotMap.leftSideMotors;
+	private SpeedControllerGroup rightSide = RobotMap.rightSideMotors;
+	private SpeedControllerGroup leftSide = RobotMap.leftSideMotors;
 	private WPI_TalonSRX frontRight = RobotMap.frontRightMotor;
 	private WPI_TalonSRX frontLeft = RobotMap.frontLeftMotor;
 	private DifferentialDrive drive;
 	
-	private double encoderCountsRight, encoderCountsLeft, inchesRight, inchesLeft;
+	private Trajectory trajectory, rightTraj, leftTraj;
+	
+	private EncoderFollower rightFollower, leftFollower;
+	
+	private int step, posTraj;
 	
 	private boolean enabled, autonomous, teleop;
 	
+	private double rightPower, leftPower;
+	
 	public Drive() {
 		
-		drive = new DifferentialDrive(left,right);
+		drive = new DifferentialDrive(leftSide,rightSide);
     	drive.setSafetyEnabled(true);
     	drive.setMaxOutput(1.0);
 		
@@ -37,11 +50,7 @@ public class Drive {
 		
 		}else if(autonomous) {
 			
-			encoderCountsRight = frontRight.getSensorCollection().getQuadraturePosition();
-			encoderCountsRight = frontLeft.getSensorCollection().getQuadraturePosition();
-			
-			inchesRight = encoderCountsRight * RobotMap.inchesPerCountMultiplier;
-			inchesLeft = encoderCountsLeft * RobotMap.inchesPerCountMultiplier;
+			drive.tankDrive(leftPower, rightPower);
 			
 		}
 	}
@@ -72,6 +81,18 @@ public class Drive {
 			break;
 		
 		}
+		
+	}
+	
+	public void setRightPower(double power) {
+		
+		rightPower = power;
+		
+	} 
+	
+	public void setLeftPower(double power) {
+		
+		leftPower = power;
 		
 	}
 
