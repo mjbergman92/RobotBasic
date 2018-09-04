@@ -19,6 +19,7 @@ public class AutonStateMachine0 extends AutonStateMachineBase implements AutonSt
 	int stateCnt = 0;
 	
 	AHRS navX = RobotMap.navx;
+	
 	WPI_TalonSRX frontRight = RobotMap.frontRightMotor;
 	WPI_TalonSRX frontLeft = RobotMap.frontLeftMotor;
 	
@@ -36,6 +37,7 @@ public class AutonStateMachine0 extends AutonStateMachineBase implements AutonSt
 	 * posTraj should be made equal to the 
 	 * trajectory number from the trajectory visual/emulator.
 	 * The value is named "posTraj" there as well.
+	 * 
 	 */
 	
 	public AutonStateMachine0() {
@@ -93,16 +95,18 @@ public class AutonStateMachine0 extends AutonStateMachineBase implements AutonSt
 		case 100:
 			
 			break;
+			
 		}
 		
 		if (nextState != state){
+			
 			state = nextState;
 			stateCnt = 0;
-		}
-		else {
+			
+		}else {
+			
 			stateCnt++;
+			
 		}
-		
 	}
-
 }

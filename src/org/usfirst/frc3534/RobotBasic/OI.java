@@ -1,10 +1,6 @@
 package org.usfirst.frc3534.RobotBasic;
 
-import org.usfirst.frc3534.RobotBasic.systems.*;
-
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -38,8 +34,8 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
-	XboxController xbox1 = new XboxController(0);
-	XboxController xbox2 = new XboxController(1);
+	XboxPlusPOV xbox1 = new XboxPlusPOV(0);
+	XboxPlusPOV xbox2 = new XboxPlusPOV(1);
 	
     public OI() {
 
@@ -47,16 +43,15 @@ public class OI {
     	
     }
     
-    public XboxController getController1() {
+    public XboxPlusPOV getController1() {
     	
     	return xbox1;
     			
     }
     
-    public XboxController getController2() {
+    public XboxPlusPOV getController2() {
     	
     	return xbox2;
     			
     }
 }
-

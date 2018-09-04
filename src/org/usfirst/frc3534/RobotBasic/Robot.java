@@ -2,9 +2,8 @@ package org.usfirst.frc3534.RobotBasic;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc3534.RobotBasic.systems.*;
 
 import Autons.AutonStateMachine0;
@@ -28,14 +27,23 @@ public class Robot extends TimedRobot {
     
     private int loopPeriod = 0;
 	private int loopCnt = 0;
+	private int logCounter = 0;
+	
+	public static double designatedLoopPeriod = 20; //in milliseconds. milliseconds = seconds/1000. seconds to milliseconds . seconds * 1000 = milliseconds
+	
+	public static boolean autonomous;
+	public static boolean teleop;
+	public static boolean enabled;
 	
 	private AutonStateMachineInterface autonStateMachine;
+	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     @Override
     public void robotInit() {
+    	
         RobotMap.init();
         
         drive = new Drive();
@@ -47,7 +55,6 @@ public class Robot extends TimedRobot {
         // pointers. Bad news. Don't move it.
         oi = new OI();
         
-
     }
 
     /**
@@ -67,30 +74,42 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
     	
-    	 int desiredAutonMode = 0;
-		    
-    	 try {
-			desiredAutonMode = (int)SmartDashboard.getNumber("autonMode", 0);				
-    	 } catch(Exception ex) {}
+    	log();
+    	
+    	int desiredAutonMode = 0;
+	    
+   	 	try {
+   	 		
+			desiredAutonMode = (int)SmartDashboard.getNumber("autonMode", 0);
+			
+   	 	} catch(Exception ex) {}
 
-    	 System.out.println("Running Auton " + desiredAutonMode);
+   	 	System.out.println("Running Auton " + desiredAutonMode);
 		
-    	 
-    	 switch(desiredAutonMode) {
+   	 
+   	 	switch(desiredAutonMode) {
+   	 	
 			case 0: 
+				
 				autonStateMachine = new AutonStateMachine0();								
 				break;
+				
 			case 1:
+				
 				autonStateMachine = new AutonStateMachine1();				
 				break;
+				
 			case 2:
+				
 				autonStateMachine = new AutonStateMachine2();				
 				break;
+				
 			case 3:
+				
 				autonStateMachine = new AutonStateMachine3();
 				break;
-    	 }
-    	 
+				
+   	 	}
     	
 		SmartDashboard.putNumber("aMode", desiredAutonMode);
         
@@ -98,11 +117,13 @@ public class Robot extends TimedRobot {
         
         while(this.isAutonomous()) {
         	
-        	drive.RobotState("autonomous enabled");
+        	log();
+        	
+        	RobotState("autonomous enabled");
         	
         	long currentTime = System.currentTimeMillis();
         	
-        	if(currentTime - prevLoopTime >= 20) {
+        	if(currentTime - prevLoopTime >= designatedLoopPeriod) {
 
         		loopPeriod = (int)(currentTime - prevLoopTime);
         		prevLoopTime = currentTime;
@@ -118,7 +139,7 @@ public class Robot extends TimedRobot {
         	
         }
         
-        drive.RobotState("autonomous disabled");
+        RobotState("autonomous disabled");
         
     }
 
@@ -141,22 +162,25 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
     	
+    	log();
+    	
     	long prevLoopTime = 0;
         
         while(this.isOperatorControl() && this.isEnabled()) {
         	
-        	drive.RobotState("teleop enabled");
+        	log();
+        	
+        	RobotState("teleop enabled");
         	
         	long currentTime = System.currentTimeMillis();
         	
-        	if(currentTime - prevLoopTime >= 20) {
-
+        	if(currentTime - prevLoopTime >= designatedLoopPeriod) {
+        		
         		loopPeriod = (int)(currentTime - prevLoopTime);
         		prevLoopTime = currentTime;
         		loopCnt++;
         		
         		//run processes
-        		
         		drive.process();
         		shooter.process();
         		
@@ -166,6 +190,59 @@ public class Robot extends TimedRobot {
         	
         }
         
-        drive.RobotState("teleop disabled");
+        RobotState("teleop disabled");
+        
     }
+    
+    public void log(){
+    	
+    	logCounter++;
+    	
+    	if(logCounter >= 5){
+    		
+    		//SmartDashboard Numbers
+    		SmartDashboard.putNumber("Loop Period", loopPeriod);
+    		SmartDashboard.putNumber("Loop Count", loopCnt);
+    		SmartDashboard.putNumber("autonMode", 0);
+    		
+    		logCounter = 0;
+    		
+    	}
+    }
+    
+    public void RobotState(String state) {
+		
+		switch(state){
+		
+		case "teleop enabled":
+			
+			autonomous = false;
+			teleop = true;
+			enabled = true;
+			break;
+			
+		case "teleop disabled":
+			
+			autonomous = false;
+			teleop = true;
+			enabled = false;
+			break;
+			
+		case "autonomous enabled":
+			
+			autonomous = true;
+			teleop = false;
+			enabled = true;
+			break;
+			
+		case "autonomous disabled":
+			
+			autonomous = true;
+			teleop = false;
+			enabled = false;
+			break;
+		
+		}
+		
+	}
 }
