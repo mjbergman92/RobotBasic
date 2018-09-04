@@ -2,7 +2,6 @@ package org.usfirst.frc3534.RobotBasic.systems;
 
 import org.usfirst.frc3534.RobotBasic.Robot;
 import org.usfirst.frc3534.RobotBasic.RobotMap;
-import org.usfirst.frc3534.RobotBasic.XboxPlusPOV.POV;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -16,7 +15,7 @@ public class Shooter {
 	
 	private double shoot = 0.5, intake = -0.5, stop = 0;
 	
-	private double shootTime = 0.5, intakeTime = .75, remainingTime; //in seconds
+	private double shootTime = 0.5, intakeTime = .75; //in seconds
 	
 	private String[] buttonNames = {"shoot", "intake"};
 	

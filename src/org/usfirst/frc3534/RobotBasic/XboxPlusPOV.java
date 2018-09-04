@@ -26,7 +26,7 @@ public class XboxPlusPOV extends XboxController{
 		
 		boolean found = false;
 		
-		for(int i = 0; i < povRecords.size(); i++) {
+		for(int i = 0; i < povRecords.size() && !found; i++) {
 			
 			if(povRecords.get(i) == direction.value && povRecords.get(i-1) != direction.value) {
 				
