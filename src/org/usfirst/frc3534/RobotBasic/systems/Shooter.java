@@ -11,21 +11,21 @@ public class Shooter {
 	
 	public String state = "stop";
 	
+	public String autonState = "stop";
+	
 	private double shooterPower = 0;
-	
-	private double shoot = 0.5, intake = -0.5, stop = 0;
-	
-	private double shootTime = 0.5, intakeTime = .75; //in seconds
 	
 	private String[] buttonNames = {"shoot", "intake"};
 	
-	private double[] stateSeconds = {shootTime, intakeTime};
+	private double[] buttonPowers = {0.5, -0.5};
+	
+	private double[] buttonTimes = {0.5, 0.75};
 	
 	ButtonProcess shooterButton;
 	
 	public Shooter() {
 		
-		shooterButton = new ButtonProcess(buttonNames, stateSeconds, "stop", Robot.designatedLoopPeriod / 1000);
+		shooterButton = new ButtonProcess(buttonNames, buttonTimes, "stop", Robot.designatedLoopPeriod / 1000);
 		
 	}
 	
@@ -37,15 +37,20 @@ public class Shooter {
 			
 			switch(shooterButton.process(buttons)) {
 			
+			/*
+			 * for each case, type "caseName" from buttonNames in order, preferably
+			 * 
+			 * KEEP STOP CASE
+			 */
 			case "shoot":
 				
-				shooterPower = shoot;
+				shooterPower = buttonPowers[0];
 				
 				break;
 				
 			case "intake":
 				
-				shooterPower = intake;
+				shooterPower = buttonPowers[1];
 				
 				break;
 				
@@ -54,16 +59,45 @@ public class Shooter {
 				shooterPower = 0;
 				
 				break;
-				
+			
 			default:
-					
-				state = "stop";
 				
-				break;
+				shooterPower = 0;
 			
 			}
 			
 		}else if(Robot.autonomous) {
+			
+			switch(autonState) {
+			
+			/*
+			 * for each case, type "caseName" from buttonNames in order, preferably
+			 * 
+			 * KEEP STOP CASE
+			 */
+			case "shoot":
+				
+				shooterPower = buttonPowers[0];
+				
+				break;
+				
+			case "intake":
+				
+				shooterPower = buttonPowers[1];
+				
+				break;
+				
+			case "stop":
+				
+				shooterPower = 0;
+				
+				break;
+			
+			default:
+				
+				shooterPower = 0;
+			
+			}
 			
 		}else {
 			
@@ -77,21 +111,13 @@ public class Shooter {
 	
 	public void setShooterPower(String state) {
 		
-		if(state == "shoot") {
-			
-			shooterPower = shoot;
-			state = "shoot";
-			
-		}else if(state == "intake") {
-			
-			shooterPower = intake;
-			state = "intake";
-			
-		}else {
-			
-			shooterPower = stop;
-			state = "stop";
-			
-		}
+		autonState = state;
+		
+	}
+	
+	public String getShooterPower() {
+		
+		return autonState;
+		
 	}
 }
