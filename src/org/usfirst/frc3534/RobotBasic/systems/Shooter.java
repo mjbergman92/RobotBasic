@@ -33,9 +33,9 @@ public class Shooter {
 		
 		if(Robot.teleop && Robot.enabled) {
 			
-			boolean[] buttons = {Robot.oi.getController1().getAButtonPressed(), Robot.oi.getController1().getBButtonPressed()};
+			boolean[] stateButtons = {Robot.oi.getController1().getAButtonPressed(), Robot.oi.getController1().getBButtonPressed()};
 			
-			switch(shooterButton.process(buttons)) {
+			switch(shooterButton.process(stateButtons)) {
 			
 			/*
 			 * for each case, type "caseName" from buttonNames in order, preferably
